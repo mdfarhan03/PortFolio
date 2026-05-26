@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V2I Digital Safety Signage - Scroll Experience</title>
+    <style>
+        /* --- Base & Light Eye-Pleasing Palette --- */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7f9fc; /* Very soft, cool off-white */
+            --text-main: #2c3e50; /* Dark slate, softer than pure black */
+            --text-muted: #5a6c7d;
+            --accent-blue: #2980b9;
+            --accent-green: #27ae60;
+            --accent-red: #c0392b;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth; 
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- Floating, Transparent, Rounded Header --- */
+        header {
+            position: fixed;
+            top: 15px; 
+            left: 5%;
+            right: 5%;
+            width: 90%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-radius: 10px; 
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); 
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; font-family: serif; margin-right: auto; color: var(--text-main); }
+        
+        nav a {
+            margin-left: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+        nav a:hover { color: var(--accent-blue); }
+
+        /* --- Page / Section Layout --- */
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Soft alternating backgrounds for readability */
+        .page:nth-child(odd) { background-color: var(--bg-primary); }
+        .page:nth-child(even) { background-color: var(--bg-secondary); }
+
+        /* --- Left Side: Text Content --- */
+        .content {
+            width: 45%;
+            opacity: 0; 
+            transform: translateY(50px);
+            will-change: opacity, transform;
+        }
+
+        .author {
+            font-weight: bold;
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #1a252f, #4a6278);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .des {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            max-width: 90%;
+        }
+
+        /* --- Right Side: Image Content --- */
+        .img-container {
+            width: 45%;
+            display: flex;
+            justify-content: flex-end;
+            opacity: 0;
+            transform: scale(0.8) translateY(50px);
+            will-change: opacity, transform;
+        }
+
+        .img-container img {
+            width: 100%;
+            max-width: 380px; /* Reduced slightly to balance the taller height */
+            height: auto;
+            aspect-ratio: 2/3; /* Taller, narrower ratio (like a movie poster) */
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: -15px 15px 35px rgba(0, 0, 0, 0.08); 
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        /* --- Specific Page 10 Grid Layout (4 Images) --- */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            max-width: 450px;
+        }
+
+        .grid-layout img {
+            max-width: 100%;
+            aspect-ratio: 1 / 1; 
+            box-shadow: -8px 8px 25px rgba(0, 0, 0, 0.05); 
+        }
+
+        /* Accent Colors */
+        #page-1 .author { color: var(--accent-blue); }
+        #page-2 .author, #page-3 .author, #page-4 .author, #page-5 .author { color: var(--accent-red); }
+        #page-6 .author, #page-7 .author, #page-8 .author, #page-9 .author { color: var(--accent-green); }
+        #page-10 .author { color: var(--accent-blue); }
+
+        @media (max-width: 900px) {
+            .page { flex-direction: column; justify-content: center; text-align: center; padding-top: 100px; }
+            .content, .img-container { width: 100%; }
+            .img-container { justify-content: center; margin-top: 40px; }
+            .title { font-size: 3rem; }
+            .des { margin: 0 auto; }
+            header { top: 10px; width: 95%; left: 2.5%; right: 2.5%; padding: 0 15px; }
+            nav a { margin-left: 15px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">MD FARHAN</div>
+        <nav>
+            <a href="#page-1">Intro</a>
+            <a href="#page-2">Problems</a>
+            <a href="#page-6">Solutions</a>
+            <a href="#page-10">My Project</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page" id="page-1">
+            <div class="content">
+                <div class="author">The Initiative</div>
+                <div class="title">V2I-Based<br>Safety System</div>
+                <div class="des">Digital Safety Signage & Speed Alert System. A smart city initiative to deliver dynamic rules and advanced alerts directly to drivers, ensuring safety regardless of external conditions.</div>
+            </div>
+            <div class="img-container">
+                <img src="front page.png" alt="System Interface" onerror="this.src='https://images.unsplash.com/photo-1580461623916-24876a3ff170?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-2">
+            <div class="content">
+                <div class="author">The Problem</div>
+                <div class="title">Poor<br>Visibility</div>
+                <div class="des">Physical signs become invisible when conditions aren't perfect. Fog, heavy weather, physical blockages, and night driving lead to missed crucial information.</div>
+            </div>
+            <div class="img-container">
+                <img src="2.png" alt="Poor Visibility" onerror="this.src='https://images.unsplash.com/photo-1428592953211-077101b2021b?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-3">
+            <div class="content">
+                <div class="author">The Problem</div>
+                <div class="title">High<br>Maintena nce</div>
+                <div class="des">Maintaining physical infrastructure is expensive and creates continuous waste. Wear and tear, labor costs, and constant replacement drain city budgets.</div>
+            </div>
+            <div class="img-container">
+                <img src="3.png" alt="Broken Sign" onerror="this.src='https://images.unsplash.com/photo-1506526135831-7e7747e70404?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-4">
+            <div class="content">
+                <div class="author">The Problem</div>
+                <div class="title">Human<br>Error</div>
+                <div class="des">Speeding tickets and accidents happen simply because the driver "didn't see the sign." Distractions like phone and GPS use lead to severe sign blindness.</div>
+            </div>
+            <div class="img-container">
+                <img src="4.png" alt="Driver Distraction" onerror="this.src='https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-5">
+            <div class="content">
+                <div class="author">The Problem</div>
+                <div class="title">Sensitive<br>Zones</div>
+                <div class="des">Drivers often brake too late or ignore static signs in critical areas like School Zones and Hospital Zones, resulting in delayed reactions where seconds matter most.</div>
+            </div>
+            <div class="img-container">
+                <img src="5.png" alt="Accidents" onerror="this.src='https://images.unsplash.com/photo-1574677764956-62ceb33e21e0?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-6">
+            <div class="content">
+                <div class="author">The Solution</div>
+                <div class="title">Wireless<br>In-Dash Alerts</div>
+                <div class="des">Utilizing all-weather RF Technology to send alerts directly to the dashboard. The driver knows the speed limit instantly, even in absolute zero visibility.</div>
+            </div>
+            <div class="img-container">
+                <img src="6.png" alt="Dashboard Tech" onerror="this.src='https://images.unsplash.com/photo-1550993540-84a2f86cb314?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-7">
+            <div class="content">
+                <div class="author">The Solution</div>
+                <div class="title">Digital<br>Infrastruc- ture</div>
+                <div class="des">Instant remote updates via a central server. Zero physical maintenance is required on the road, saving millions in long-term smart city management.</div>
+            </div>
+            <div class="img-container">
+                <img src="7.png" alt="Digital Grid" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-8">
+            <div class="content">
+                <div class="author">The Solution</div>
+                <div class="title">Audio-Visual<br>Interrupts</div>
+                <div class="des">Active buzzer alerts and color-coded LEDs grab attention instantly. It is physically impossible to miss the warning, even if the driver is not looking at the road.</div>
+            </div>
+            <div class="img-container">
+                <img src="8.png" alt="Audio Visual System" onerror="this.src='https://images.unsplash.com/photo-1614064019183-50937a09fb2a?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+
+        <section class="page" id="page-9">
+            <div class="content">
+                <div class="author">The Solution</div>
+                <div class="title">Smart<br>Zones</div>
+                <div class="des">Early digital warnings provide drivers with pre-warning alerts before they even reach the zone. Time-based rules automatically adjust limits during school hours.</div>
+            </div>
+            <div class="img-container">
+                <img src="9.png" alt="Smart Zone Routing" onerror="this.src='https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=800&auto=format&fit=crop'">
+            </div>
+        </section>
+        <section class="page" id="page-10">
+            <div class="content">
+                <div class="text-block">
+                    <div class="author">CURRENT ACHEIVEMENT </div>
+                    <div class="title" style="font-size: 3rem;">PROTOTYPE</div>
+                    <div class="des">We have built a fully functional V2I prototype demonstrating real-time localized alerts. The hardware utilizes an Arduino Uno, NRF24 transceiver modules, an LCD display, and LEDs. Crucially, we successfully developed and implemented the core directional logic algorithm that ensures accurate sign targeting.</div>
+                </div>
+                
+                <div class="text-block" style="margin-top: 40px;">
+                    <div class="author">Next Steps</div>
+                    <div class="title" style="font-size: 3rem;">THE FUTURE </div>
+                    <div class="des">Our next phase involves developing a cloud-based central server for dynamic, city-wide updates. We will miniaturize the hardware into a premium, compact device that seamlessly integrates into any car dashboard. Furthermore, we plan to expand this critical safety technology by designing specialized units for motorcycles.</div>
+                </div>
+            </div>
+            
+            <div class="img-container grid-layout">
+                <img src="12.png" alt="Grid Image 1" onerror="this.src='https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=400&auto=format&fit=crop'">
+                <img src="13.png" alt="Grid Image 2" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=400&auto=format&fit=crop'">
+                <img src="enhance acheve.png" alt="Grid Image 3" onerror="this.src='https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=400&auto=format&fit=crop'">
+                <img src="thenexx.png" alt="Grid Image 4" onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=400&auto=format&fit=crop'">
+            </div>
+  
+
+        </section>
+    </main>
+
+    <script>
+        const pages = document.querySelectorAll('.page');
+        
+        function updateScrollAnimations() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            pages.forEach(page => {
+                const text = page.querySelector('.content');
+                const img = page.querySelector('.img-container');
+                
+                const pageTop = page.offsetTop;
+                const pageHeight = page.offsetHeight;
+                
+                const distanceFromCenter = (scrollY + windowHeight / 2) - (pageTop + pageHeight / 2);
+                const rawProgress = distanceFromCenter / windowHeight;
+                const progress = Math.max(-1.5, Math.min(1.5, rawProgress)); 
+
+                if (progress > -1.2 && progress < 1.2) {
+                    let textOpacity = 1 - Math.abs(progress * 1.5); 
+                    let textTranslateY = progress * 100; 
+
+                    text.style.opacity = textOpacity;
+                    text.style.transform = `translateY(${textTranslateY}px)`;
+
+                    let imgOpacity = 1 - Math.abs(progress * 1.2);
+                    let imgScale = 1 - Math.abs(progress * 0.2); 
+                    let imgTranslateY = progress * 50;
+
+                    img.style.opacity = imgOpacity;
+                    img.style.transform = `scale(${imgScale}) translateY(${imgTranslateY}px)`;
+                }
+            });
+
+            requestAnimationFrame(updateScrollAnimations);
+        }
+
+        requestAnimationFrame(updateScrollAnimations);
+    </script>
+</body>
+</html>
