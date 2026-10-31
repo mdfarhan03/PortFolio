@@ -201,27 +201,13 @@
 </div>
 <script>
   function enforceDesktopView() {
-    // 1024px is a standard threshold for desktop screens
     if (window.innerWidth < 1024) {
-      
-      // Option 1: A simple pop-up notification
-      alert("Please open this link on a Desktop computer/Desktop view for the intended experience.");
-      
-      // Option 2: Hide the broken layout and show a clean message on screen (Recommended)
-      document.body.innerHTML = `
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 20px; font-family: sans-serif; background-color: #f4f4f4; color: #333;">
-          <h2>Desktop View Required</h2>
-          <p>This portfolio is currently optimized for desktop screens only. If you are on a mobile device, Kindly on Desktop view for better experience</p>
-        </div>
-      `;
+      alert("Please open this link on a desktop computer for the intended experience.");
     }
   }
 
-  // Run the check when the page first loads
+  // Runs the check when the page loads
   window.addEventListener('load', enforceDesktopView);
-  
-  // (Optional) Run the check again if the user resizes their browser window
-  window.addEventListener('resize', enforceDesktopView);
 </script>
 </body>
 
